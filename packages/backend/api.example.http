@@ -1,0 +1,41 @@
+#
+# REST Client isntall vscode
+# https://marketplace.visualstudio.com/items/?itemName=humao.rest-client
+#
+
+GET http://localhost:3071/
+Content-Type: application/json
+
+
+################################################################################
+###### USER #######################################################################
+
+###### index
+GET http://localhost:3071/api/user
+
+###### create
+POST http://localhost:3071/api/user
+Content-Type: application/json
+
+{
+  "firstName": "Wagner",
+  "lastName": "Castro",
+  "email": "wagner.castro@teste.com",
+  "password": "@123Alfa"
+}
+
+###### show
+GET http://localhost:3071/api/user/1
+
+
+###### update
+PATCH http://localhost:3071/api/user/1
+Content-Type: application/json
+
+{
+  "firstName": "Wagner",
+  "lastName": "Castro"
+}
+
+### delete
+DELETE  http://localhost:3071/api/user/1

@@ -1,0 +1,6 @@
+
+### COMANDO nest
+$ nest g res  modules/User
+
+### DOCKER
+$ docker compose -f docker-compose.dev.yml --env-file .env.docker.dev exec  backend bash
