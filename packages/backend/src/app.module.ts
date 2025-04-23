@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { getEnvPath } from './utils/helpers';
+import { UserModule } from './modules/user/user.module';
 
 dotenv.config({ path: path.join(__dirname, 'config', 'envs', `.env.${process.env.NODE_ENV}`) });
 
@@ -17,6 +18,7 @@ dotenv.config({ path: path.join(__dirname, 'config', 'envs', `.env.${process.env
       // expandVariables: true,
       envFilePath: getEnvPath(path.join(__dirname, 'config', 'envs ')),
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
