@@ -2,12 +2,11 @@
 
 <template>
   <div class="container">
-    <header class="item-header">
+    <!-- <header class="item-header">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/users/list">Listar usuários</RouterLink>
       </nav>
-    </header>
+    </header> -->
 
     <main class="item-main">
       <RouterView />
@@ -15,12 +14,8 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-// Main Stylesheet
+<style lang="scss">
 @import '@/assets/scss/main';
-
-// All color themes are included and available by default
-// Feel free to comment out any of them if you won't use them in your project
 @import '@/assets/scss/theme/themes/amethyst';
 @import '@/assets/scss/theme/themes/city';
 @import '@/assets/scss/theme/themes/flat';
@@ -37,7 +32,7 @@
 }
 
 .container {
-  height: 100vh;
+  // height: 100vh;
   justify-content: center;
   display: grid;
   grid-template-columns: auto;
@@ -45,6 +40,8 @@
   grid-template-areas:
     'header'
     'main';
+
+  margin-bottom: 2rem;
 }
 
 header {
@@ -82,6 +79,7 @@ nav a:first-of-type {
   }
 
   nav {
+    min-width: 200px;
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;
