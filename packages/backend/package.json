@@ -70,6 +70,10 @@
       "ts"
     ],
     "rootDir": "src",
+    "moduleNameMapper": {
+      "@/(.*)": "<rootDir>/$1",
+      "tests/(.*)": "<rootDir>/__tests__/$1"
+    },
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -78,6 +82,16 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/_node_modules/",
+      "/__node_modules/",
+      "/k8s/",
+      "/dist/",
+      "/public/",
+      "/.vscode/",
+      "/.docker/"
+    ]
   }
 }
