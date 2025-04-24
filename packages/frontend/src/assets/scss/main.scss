@@ -1,0 +1,129 @@
+// Bootstrap functions
+@import 'bootstrap/scss/functions';
+
+// User variables (your own variable overrides)
+@import 'custom/variables';
+
+// Custom Bootstrap variables overrides
+@import 'theme/variables-bootstrap';
+
+// Bootstrap variables
+@import 'bootstrap/scss/variables';
+
+// Bootstrap maps
+@import 'bootstrap/scss/maps';
+
+// Bootstrap mixins
+@import 'bootstrap/scss/mixins';
+
+// Custom mixins and Bootstrap overrides
+@import 'theme/mixins';
+
+// Bootstrap Utilities
+@import 'bootstrap/scss/utilities';
+
+// Custom utilities and Bootstrap overrides
+@import 'theme/utilities';
+
+// Layout & components
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/button-group';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/accordion';
+@import 'bootstrap/scss/breadcrumb';
+@import 'bootstrap/scss/pagination';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/progress';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/toasts';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/tooltip';
+@import 'bootstrap/scss/popover';
+@import 'bootstrap/scss/carousel';
+@import 'bootstrap/scss/spinners';
+@import 'bootstrap/scss/offcanvas';
+@import 'bootstrap/scss/placeholders';
+
+// Bootstrap Helpers
+@import 'bootstrap/scss/helpers';
+
+// Bootstrap Utilities
+@import 'bootstrap/scss/utilities/api';
+
+// Custom variables
+@import 'theme/variables';
+@import 'theme/variables-themes';
+
+// Extend Bootstrap styles and override the ones..
+// ..we can't alter with the provided variables
+@import 'theme/fonts';
+@import 'theme/reboot';
+@import 'theme/type';
+@import 'theme/grid';
+@import 'theme/tables';
+@import 'theme/forms';
+@import 'theme/buttons';
+@import 'theme/transitions';
+@import 'theme/dropdown';
+@import 'theme/forms';
+@import 'theme/nav';
+@import 'theme/card';
+@import 'theme/breadcrumb';
+@import 'theme/pagination';
+@import 'theme/modal';
+@import 'theme/print';
+
+// Custom layout
+@import 'theme/layout';
+@import 'theme/header';
+@import 'theme/sidebar';
+@import 'theme/side-overlay';
+@import 'theme/layout-variations';
+@import 'theme/hero';
+@import 'theme/block';
+
+// Custom components
+@import 'theme/page-loader';
+@import 'theme/nav-main';
+@import 'theme/images';
+@import 'theme/lists';
+@import 'theme/item';
+@import 'theme/overlay';
+@import 'theme/timeline';
+@import 'theme/ribbon';
+
+// Helpers
+@import 'theme/helpers';
+
+// Core third party components
+@import 'vendor/animate';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/regular';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/brands';
+@import 'vendor/simple-line-icons';
+@import 'vendor/simplebar';
+@import 'vendor/nprogress';
+
+// RTL Support
+@import 'theme/rtl-support';
+
+// Dark mode
+@import 'theme/dark-mode';
+
+// User styles (your own styles/overrides)
+@import 'custom/main';
