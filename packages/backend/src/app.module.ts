@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
@@ -18,6 +19,20 @@ dotenv.config({ path: path.join(__dirname, 'config', 'envs', `.env.${process.env
       isGlobal: true,
       // expandVariables: true,
       envFilePath: getEnvPath(path.join(__dirname, 'config', 'envs')),
+    }),
+    TypeOrmModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        host: process.env.DB_HOST || 'localhost',
+        port: Number(process.env.POSTGRES_PORT) || 5432,
+        username: process.env.POSTGRES_USER || 'admin',
+        password: process.env.POSTGRES_PASSWORD || 'postgres',
+        database: process.env.POSTGRES_DATABASE || 'postgres',
+        entities: [__dirname + '/**/*.entity{.js,.ts}'],
+        synchronize: true,
+        autoLoadEntities: true,
+        // logging: true,
+      }),
     }),
     UserModule,
   ],

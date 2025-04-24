@@ -10,7 +10,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn('increment')
@@ -25,7 +24,7 @@ export class UserEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -42,15 +41,23 @@ export class UserEntity {
     this.password = hashSync(this.password, 10);
   }
 
-  constructor(user: Partial<UserEntity>) {
-    this.id = Number(user?.id) ;
-    this.firstName = user.firstName ?? '';
-    this.lastName = user.lastName ?? '';
-    this.email = user.email ?? '';
-    this.password = user.password ?? '';
-    this.createdAt = user.createdAt ?? '';
-    this.updatedAt = user.updatedAt ?? '';
-    this.deletedAt = user.deletedAt ?? '';
+  // @ts-nocheck
+  constructor(user?: Partial<UserEntity>) {
+    // @ts-ignore
+    this.id = user?.id;
+    // @ts-ignore
+    this.firstName = user?.firstName;
+    // @ts-ignore
+    this.lastName = user?.lastName;
+    // @ts-ignore
+    this.email = user?.email;
+    // @ts-ignore
+    this.password = user?.password;
+    // @ts-ignore
+    this.createdAt = user?.createdAt;
+    // @ts-ignore
+    this.updatedAt = user?.updatedAt;
+    // @ts-ignore
+    this.deletedAt = user?.deletedAt;
   }
 }
-
