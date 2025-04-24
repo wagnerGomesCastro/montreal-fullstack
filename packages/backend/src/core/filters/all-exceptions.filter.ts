@@ -17,13 +17,14 @@ export class AllExceptionsFilters implements ExceptionFilter {
     let errorMessage: string;
 
     // console.log('exceptionexceptionexceptionexception', exception);
+
     this.exception = exception;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const errorResponse = exception.getResponse();
 
-      errorMessage = exception.message || (errorResponse as HttpExceptionResponse).message;
+      errorMessage = (errorResponse as HttpExceptionResponse).message || exception.message;
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       errorMessage = 'Critical internal server error occurred!';
