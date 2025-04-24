@@ -17,6 +17,8 @@ async function bootstrap() {
     }),
   );
 
+  app.setGlobalPrefix('api');
+
   await app.listen(APP_PORT, () => {
     console.log(`🚀 Server started at http://localhost:${APP_PORT}`);
     console.log(`🚨️ Environment: ${process.env.NODE_ENV}`);
