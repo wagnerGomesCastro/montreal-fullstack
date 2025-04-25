@@ -1,4 +1,3 @@
-# Desafio Node.js e React.js
 
 ### Dependências utilizadas
 
@@ -16,7 +15,7 @@
 **2 -** Clone o projeto e instale as dependências:
 
 ```
-$ git https://github.com/wagnerGCastro/montreal-fullstack
+$ git clone https://github.com/wagnerGomesCastro/montreal-fullstack/
 $ cd montreal-fullstack
 ```
 
