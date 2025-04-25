@@ -1,5 +1,7 @@
+<!-- eslint-disable vue/block-lang -->
 <script setup>
-import { reactive, computed, onMounted } from 'vue'
+import { reactive, computed, onMounted, ref } from 'vue'
+import ModalForm from '@/components/ModalForm/index.vue'
 
 // // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -15,6 +17,49 @@ import {
 import users from '@/data/usersDataset.json'
 
 // console.log(users)
+
+const openModal = ref('modal')
+const method = ref('')
+const titleModal = ref('')
+
+const user = reactive({
+  firstName: null,
+  lastName: null,
+  email: null,
+  password: null,
+})
+
+const toggleModal = () => {
+  openModal.value = 'modal'
+}
+
+const handlerEditUser = (item) => {
+  console.log(item)
+
+  if (item) {
+    user.firstName = item.firstName
+    user.lastName = item.lastName
+    user.email = item.email
+    user.password = item.password
+  }
+
+  method.value = 'update'
+  titleModal.value = 'Atualizar Usuário'
+
+  toggleModal()
+}
+
+const handlerCreateUser = () => {
+  user.firstName = ''
+  user.lastName = ''
+  user.email = ''
+  user.password = ''
+
+  method.value = 'create'
+  titleModal.value = 'Adicionar Usuário'
+
+  toggleModal()
+}
 
 // Helper variables
 const cols = reactive([
@@ -110,6 +155,99 @@ onMounted(() => {
 })
 </script>
 
+<template>
+  <BasePageHeading title="Usuários" subtitle="lista de usuários" />
+
+  <div class="content">
+    <BaseBlock title="" content-full>
+      <Dataset
+        v-slot="{ ds }"
+        :ds-data="userMaped"
+        :ds-sortby="sortBy"
+        :ds-search-in="['firstName', 'lastName', 'email', 'cratedAt']"
+      >
+        <div class="row" :data-page-count="ds.dsPagecount">
+          <div id="datasetLength" class="col-md-4 py-2">
+            <DatasetShow :dsShowEntries="5" />
+          </div>
+          <div class="col-md-5 py-2">
+            <DatasetSearch ds-search-placeholder="Pesquisar..." />
+          </div>
+
+          <div class="col-md-3 py-2">
+            <button
+              @click="handlerCreateUser"
+              :data-bs-toggle="openModal"
+              data-bs-target="#modal-block-vcenter"
+              type="button"
+              class="btn btn-sm btn-alt-secondary p-2"
+            >
+              <i class="fa fa-fw fa-plus"></i> Adicionar usuário
+            </button>
+          </div>
+        </div>
+        <hr />
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-striped mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th
+                      v-for="(th, index) in cols"
+                      :key="th.field"
+                      :class="['sort', th.sort]"
+                      @click="onSort($event, index)"
+                    >
+                      {{ th.name }} <i class="gg-select float-end"></i>
+                    </th>
+                    <th class="text-center" style="width: 100px">Ações</th>
+                  </tr>
+                </thead>
+                <DatasetItem tag="tbody" class="fs-sm">
+                  <template #default="{ row, rowIndex }">
+                    <tr>
+                      <th scope="row">{{ rowIndex + 1 }}</th>
+                      <td style="min-width: 150px">{{ row.firstName }}</td>
+                      <td style="min-width: 150px">{{ row.lastName }}</td>
+                      <td>{{ row.email }}</td>
+                      <td style="min-width: 150px">{{ row.createdAt }}</td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-alt-secondary"
+                            @click="handlerEditUser(row)"
+                            :data-bs-toggle="openModal"
+                            data-bs-target="#modal-block-vcenter"
+                          >
+                            <i class="fa fa-fw fa-pencil-alt"></i>
+                          </button>
+                          <button type="button" class="btn btn-sm btn-alt-secondary">
+                            <i class="fa fa-fw fa-times"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </template>
+                </DatasetItem>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
+          <DatasetInfo class="py-3 fs-sm" />
+          <DatasetPager class="flex-wrap py-3 fs-sm" />
+        </div>
+      </Dataset>
+    </BaseBlock>
+
+    <ModalForm :title="titleModal" :dataForm="user" :action="method" />
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .gg-select {
   box-sizing: border-box;
@@ -157,76 +295,3 @@ th.sort {
   }
 }
 </style>
-
-<template>
-  <BasePageHeading title="Usuários" subtitle="lista de usuários" />
-
-  <div class="content">
-    <BaseBlock title="" content-full>
-      <Dataset
-        v-slot="{ ds }"
-        :ds-data="userMaped"
-        :ds-sortby="sortBy"
-        :ds-search-in="['firstName', 'lastName', 'email', , 'cratedAt']"
-      >
-        <div class="row" :data-page-count="ds.dsPagecount">
-          <div id="datasetLength" class="col-md-8 py-2">
-            <DatasetShow />
-          </div>
-          <div class="col-md-4 py-2">
-            <DatasetSearch ds-search-placeholder="Pesquisar..." />
-          </div>
-        </div>
-        <hr />
-
-        <div class="row">
-          <div class="col-md-12">
-            <div class="table-responsive">
-              <table class="table table-striped mb-0">
-                <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th
-                      v-for="(th, index) in cols"
-                      :key="th.field"
-                      :class="['sort', th.sort]"
-                      @click="onSort($event, index)"
-                    >
-                      {{ th.name }} <i class="gg-select float-end"></i>
-                    </th>
-                    <th class="text-center" style="width: 100px">Ações</th>
-                  </tr>
-                </thead>
-                <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, rowIndex }">
-                    <tr>
-                      <th scope="row">{{ rowIndex + 1 }}</th>
-                      <td style="min-width: 150px">{{ row.firstName }}</td>
-                      <td style="min-width: 150px">{{ row.lastName }}</td>
-                      <td>{{ row.email }}</td>
-                      <td style="min-width: 150px">{{ row.createdAt }}</td>
-                      <td class="text-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-alt-secondary">
-                            <i class="fa fa-fw fa-pencil-alt"></i>
-                          </button>
-                          <button type="button" class="btn btn-sm btn-alt-secondary">
-                            <i class="fa fa-fw fa-times"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </template>
-                </DatasetItem>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
-          <DatasetInfo class="py-3 fs-sm" />
-          <DatasetPager class="flex-wrap py-3 fs-sm" />
-        </div>
-      </Dataset>
-    </BaseBlock>
-  </div>
-</template>

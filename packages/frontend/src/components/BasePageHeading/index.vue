@@ -1,15 +1,15 @@
-<script setup>
+<script setup lang="ts">
 // Component properties
 defineProps({
   title: {
     type: String,
-    description: "The title of page heading section",
+    description: 'The title of page heading section',
   },
   subtitle: {
     type: String,
-    description: "The subtitle of page heading section",
+    description: 'The subtitle of page heading section',
   },
-});
+})
 </script>
 
 <template>
@@ -18,14 +18,11 @@ defineProps({
       <slot>
         <div
           v-if="title || $slots.extra"
-          class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2"
+          class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center"
         >
           <div class="flex-grow-1">
             <h1 v-if="title" class="h3 fw-bold mb-1">{{ title }}</h1>
-            <h2
-              v-if="subtitle"
-              class="fs-base lh-base fw-medium text-muted mb-0"
-            >
+            <h2 v-if="subtitle" class="fs-base lh-base fw-medium text-muted mb-0">
               {{ subtitle }}
             </h2>
           </div>

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import HomeView from '../views/HomeView.vue'
 import BaseLayout from '../layouts/BaseLayout.vue'
 import ListUsers from '../views/User/List.vue'
 
