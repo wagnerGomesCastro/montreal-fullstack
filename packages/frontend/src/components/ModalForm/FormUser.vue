@@ -6,6 +6,8 @@ import { computed, reactive } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, email, helpers } from '@vuelidate/validators'
 
+import { useUserStore } from '@/stores/user' // Certifique-se de ajustar o caminho
+
 export default {
   props: {
     dataForm: {
@@ -17,6 +19,10 @@ export default {
         password: null,
       }),
     },
+    closeModal: {
+      type: Function,
+      default: () => {},
+    },
     action: {
       type: String,
       description: '',
@@ -24,6 +30,8 @@ export default {
   },
   setup(props, { expose }) {
     // console.log('props', props)
+
+    const userStore = useUserStore()
 
     const userData = reactive(props.dataForm)
 
@@ -44,10 +52,11 @@ export default {
           required,
           email,
         },
-        password: {
-          // required,
-          // minLength: minLength(5),
-        },
+        // password: {
+        //   required,
+        //   minLength: minLength(8),
+        //   regexp,
+        // },
       }
     })
 
@@ -58,10 +67,26 @@ export default {
     async function onSubmit() {
       const result = await v$.value.$validate()
 
+      console.log('onSubmit')
+
+      console.log('result', result)
+
       if (!result) {
         // notify user form is invalid
         return
       }
+
+      if (props.action === 'create') {
+        // Create user
+        console.log('userData', userData)
+        await userStore.addUser(userData)
+      } else if (props.action === 'update') {
+        // Update user
+        console.log('userData', userData)
+        await userStore.updateUser(userData)
+      }
+
+      props.closeModal()
     }
 
     const resetForm = () => {
@@ -95,7 +120,7 @@ export default {
               @blur="v$.firstName.$touch"
             />
             <div v-if="v$.firstName.$errors.length" class="invalid-feedback animated fadeIn">
-              Campo obrigatório
+              Campo obrigatório, no mínimo 3 caracteres
             </div>
           </div>
 
@@ -114,7 +139,7 @@ export default {
               @blur="v$.lastName.$touch"
             />
             <div v-if="v$.lastName.$errors.length" class="invalid-feedback animated fadeIn">
-              Campo obrigatório
+              Campo obrigatório, no mínimo 3 caracteres
             </div>
           </div>
 
@@ -137,7 +162,7 @@ export default {
             </div>
           </div>
 
-          <div class="">
+          <!-- <div v-if="action === 'create'" class="">
             <label class="form-label" for="val-password"
               >Password <span class="text-danger">*</span></label
             >
@@ -152,9 +177,10 @@ export default {
               @blur="v$.password.$touch"
             />
             <div v-if="v$.password.$errors.length" class="invalid-feedback animated fadeIn">
-              Digite uma senha válida
+              Digite uma senha válida, deve conter pelo menos 8 caracteres, uma letra maiúscula, uma
+              letra minúscula, um número e um caractere especial
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </BaseBlock>
