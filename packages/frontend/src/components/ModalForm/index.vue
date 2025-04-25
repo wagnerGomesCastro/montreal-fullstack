@@ -1,5 +1,6 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, onMounted } from 'vue'
 
 import FormUser from './FormUser.vue'
 
@@ -8,6 +9,7 @@ interface FormUserRef {
   resetForm: () => void
 }
 
+const buttonToogle = ref<HTMLButtonElement | null>(null)
 const childFormUserRef = ref<FormUserRef | null>(null)
 
 defineProps({
@@ -30,13 +32,11 @@ defineProps({
   },
 })
 
-const openModal = ref('')
-
 const toggleModal = () => {
-  openModal.value = 'modal'
+  buttonToogle.value?.click()
 }
 
-const onSubmit = () => {
+const onSubmit = async () => {
   if (childFormUserRef.value) {
     childFormUserRef.value.onSubmit()
   }
@@ -52,6 +52,16 @@ const resetForm = () => {
 <template>
   <!-- For advanced modal usage you can check out https://getbootstrap.com/docs/5.3/components/modal/ -->
   <div class="content">
+    <button
+      v-show="false"
+      ref="buttonToogle"
+      class="btn btn-primary"
+      data-bs-target="#modal-block-vcenter"
+      data-bs-toggle="modal"
+    >
+      trigger modal
+    </button>
+
     <div
       class="modal fade"
       id="modal-block-vcenter"
@@ -60,7 +70,7 @@ const resetForm = () => {
       aria-labelledby="modal-block-vcenter"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-md show" role="document">
         <div class="modal-content">
           <BaseBlock :title="title" transparent class="mb-0">
             <template #options>
@@ -76,7 +86,12 @@ const resetForm = () => {
 
             <template #content>
               <div class="fs-sm">
-                <FormUser ref="childFormUserRef" :dataForm="dataForm" :action="action" />
+                <FormUser
+                  ref="childFormUserRef"
+                  :dataForm="dataForm"
+                  :action="action"
+                  :closeModal="toggleModal"
+                />
               </div>
 
               <div class="block-content block-content-full text-end bg-body">
