@@ -2,6 +2,7 @@
 <script setup>
 import { reactive, computed, onMounted, ref } from 'vue'
 import ModalForm from '@/components/ModalForm/index.vue'
+import { useUserStore } from '@/stores/user' // Certifique-se de ajustar o caminho
 
 // // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -14,12 +15,14 @@ import {
 } from 'vue-dataset'
 
 // Get example data
-import users from '@/data/usersDataset.json'
+// import users from '@/data/usersDataset.json'
 
-// console.log(users)
+const userStore = useUserStore()
+
+const modalInstance = null
 
 const openModal = ref('modal')
-const method = ref('')
+const method = ref(null)
 const titleModal = ref('')
 
 const user = reactive({
@@ -33,10 +36,15 @@ const toggleModal = () => {
   openModal.value = 'modal'
 }
 
+const handlerRemoveUser = async (id) => {
+  await userStore.deleteUserById(id)
+}
+
 const handlerEditUser = (item) => {
   console.log(item)
 
   if (item) {
+    user.id = item.id
     user.firstName = item.firstName
     user.lastName = item.lastName
     user.email = item.email
@@ -50,6 +58,7 @@ const handlerEditUser = (item) => {
 }
 
 const handlerCreateUser = () => {
+  // user.id = ''
   user.firstName = ''
   user.lastName = ''
   user.email = ''
@@ -99,16 +108,20 @@ const sortBy = computed(() => {
   }, [])
 })
 
+// const userMaped = computed(() => {
+//   return users.value.map((user) => {
+//     const [firstName, lastName] = user.name.split(' ')
+//     return {
+//       firstName,
+//       lastName,
+//       email: user.email,
+//       createdAt: user.createdAt,
+//     }
+//   })
+// })
+
 const userMaped = computed(() => {
-  return users.map((user) => {
-    const [firstName, lastName] = user.name.split(' ')
-    return {
-      firstName,
-      lastName,
-      email: user.email,
-      createdAt: user.createdAt,
-    }
-  })
+  return userStore.users
 })
 
 // On sort th click
@@ -152,6 +165,8 @@ onMounted(() => {
   selectLength.classList = ''
   selectLength.classList.add('form-select')
   selectLength.style.width = '80px'
+
+  userStore.getUsers()
 })
 </script>
 
@@ -209,11 +224,12 @@ onMounted(() => {
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row, rowIndex }">
                     <tr>
-                      <th scope="row">{{ rowIndex + 1 }}</th>
+                      <th scope="row">{{ row.id }}</th>
                       <td style="min-width: 150px">{{ row.firstName }}</td>
                       <td style="min-width: 150px">{{ row.lastName }}</td>
                       <td>{{ row.email }}</td>
                       <td style="min-width: 150px">{{ row.createdAt }}</td>
+
                       <td class="text-center">
                         <div class="btn-group">
                           <button
@@ -225,7 +241,12 @@ onMounted(() => {
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
-                          <button type="button" class="btn btn-sm btn-alt-secondary">
+
+                          <button
+                            @click="handlerRemoveUser(row.id)"
+                            type="button"
+                            class="btn btn-sm btn-alt-secondary"
+                          >
                             <i class="fa fa-fw fa-times"></i>
                           </button>
                         </div>
