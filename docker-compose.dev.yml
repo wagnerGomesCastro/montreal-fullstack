@@ -5,6 +5,12 @@ networks:
   frontend:
     driver: ${NETWORKS_DRIVER}
 
+volumes:
+  vol_postgres:
+    driver: local
+  vol_pgadmin:
+    driver: local
+
 services:
   ### DEVELOPMENT ##############################################
   backend:
@@ -40,7 +46,8 @@ services:
       POSTGRES_DB: postgres
     restart: unless-stopped
     volumes:
-      - ./.docker/data/postgres/data:/var/lib/postgresql/data
+      # - ./.docker/data/postgres/data:/var/lib/postgresql/data
+    - vol_postgres:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT:-5434}:5432"
     networks:
@@ -56,12 +63,13 @@ services:
       - "${PGADMIN_PORT:-8086}:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.com.br}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      PGADMIN_PASSWORD: ${PGADMIN_PASSWORD:-admin}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
     depends_on:
       - postgres
     volumes:
-      - ./.docker/data/pgadmin/data/:/var/lib/pgadmin/
+      # - ./.docker/data/pgadmin/data/:/var/lib/pgadmin/
+      - vol_pgadmin:/var/lib/pgadmin/
     networks:
       - backend
     extra_hosts:
